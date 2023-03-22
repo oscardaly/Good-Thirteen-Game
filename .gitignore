@@ -17,6 +17,7 @@ build.log
 *.log
 *.log.*
 *.tmp
+*.iml
 
 # Ignore compiled bytecode files
 *.class
