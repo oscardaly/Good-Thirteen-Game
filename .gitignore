@@ -1,0 +1,27 @@
+# Ignore build-related directories
+target/
+bin/
+build/
+out/
+dist/
+logs/
+build.log
+
+# Ignore IDE-related files
+.idea/
+.settings/
+.project
+.classpath
+
+# Ignore log files and other temporary files
+*.log
+*.log.*
+*.tmp
+
+# Ignore compiled bytecode files
+*.class
+
+# Ignore Maven-specific files
+target/
+pom.xml.*
+pom.properties

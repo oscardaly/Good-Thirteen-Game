@@ -53,7 +53,7 @@ public class Main {
         }
     }
 
-    private static String getUserOption() {
+    public static String getUserOption() {
         Scanner scanner = new Scanner(System.in);
         String userOption;
 
