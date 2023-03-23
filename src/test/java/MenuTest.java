@@ -1,19 +1,32 @@
-import org.junit.jupiter.api.Test;
-
-import java.util.Scanner;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MenuTest {
+import java.io.BufferedReader;
+import java.io.IOException;
+
+import org.junit.jupiter.api.Test;
+
+public class MenuTest extends Main {
+
     @Test
-    public void shouldReturnCorrectOption() {
-//        Scanner scanner = mock(Scanner.class);
-//        when(scanner.next()).thenReturn("1");
-//
-//        String userOption = Main.getUserOption();
-//        assertEquals("user mode", userOption);
-        assertEquals(1, 1);
+    public void testUserMode() throws IOException {
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("1");
+        assertEquals("user mode", getUserOrDemoMode(bufferedReader));
+    }
+
+    @Test
+    public void testDemoMode() throws IOException {
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("2");
+        assertEquals("demonstration mode", getUserOrDemoMode(bufferedReader));
+    }
+
+    @Test
+    public void testInvalidOption() throws IOException {
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("3");
+        assertEquals("not an option", getUserOrDemoMode(bufferedReader));
     }
 }
