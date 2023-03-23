@@ -47,14 +47,18 @@ public class Main {
             //If there are no cards left then the user has won and the game is ended
 
             //When game Is finished allow the user to replay the game using arrow keys move by move
-        } else if (userOption.equals("demonstration mode")) {
+        }
+
+        else if (userOption.equals("demonstration mode")) {
             System.out.println("Demonstration mode.");
 
             //demonstration mode
             //press any key and the computer will play the game for them
             //shuffle cards
             //deal 10 cards face up
-        } else {
+        }
+
+        else {
             System.out.println("Incorrect option selected.");
         }
     }

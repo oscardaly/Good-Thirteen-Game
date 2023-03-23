@@ -1,14 +1,11 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import java.io.BufferedReader;
 import java.io.IOException;
-
 import org.junit.jupiter.api.Test;
 
 public class MenuTest extends Main {
-
     @Test
     public void testUserMode() throws IOException {
         BufferedReader bufferedReader = mock(BufferedReader.class);
