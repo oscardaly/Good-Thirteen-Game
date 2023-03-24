@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 public class Main {
 
@@ -11,9 +10,8 @@ public class Main {
         printMenu();
 
         final String userOption = getUserOrDemoMode(reader);
-
+//        List<Card> deckOfCards = createDeckOfCards();
         //make cards
-        //A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
         //Spades, Hearts, Diamonds, Clubs
 
         //shuffle cards
