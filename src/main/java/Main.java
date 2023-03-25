@@ -10,11 +10,7 @@ public class Main {
         printMenu();
 
         final String userOption = getUserOrDemoMode(reader);
-//        List<Card> deckOfCards = createDeckOfCards();
-        //make cards
-        //Spades, Hearts, Diamonds, Clubs
 
-        //shuffle cards
 
         //deal 10 cards face up
         //for loop over an array 10 times
