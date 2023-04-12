@@ -10,14 +10,11 @@ public class Main {
         printMenu();
 
         final String userOption = getUserOrDemoMode(reader);
+        DeckOfCards deckOfCards = DeckOfCards.createDeckOfCards();
+        deckOfCards.shuffle();
 
-
-        //deal 10 cards face up
-        //for loop over an array 10 times
-        //take the current index and print it
-        //remove the current index from the array
-        //linkedList/stack for stack of cards
-        //array for list of cards on table
+        DeckOfCards faceUpCards = new DeckOfCards();
+        dealCardsFromDeck(deckOfCards, faceUpCards);
 
         //while loop?
         if (userOption.equals("user mode")) {
@@ -57,10 +54,24 @@ public class Main {
         }
     }
 
+    private static void dealCardsFromDeck(DeckOfCards deckOfCards, DeckOfCards faceUpCards) {
+        if (deckOfCards.getSize() >= 10) {
+            for (int i = 0; i < 10; i++) {
+                Card card = deckOfCards.takeCardFromDeck();
+                //take this out into a method
+                System.out.println(i+1 + ". " + card.toString());
+                faceUpCards.add(card);
+            }
+        }
+
+        else {
+            System.out.println("Not enough cards in deck to start game");
+        }
+    }
+
     protected static String getUserOrDemoMode(BufferedReader reader) throws IOException {
-        String userOption;
         System.out.println("Please enter 1 or 2 to select play mode: ");
-        userOption = reader.readLine();
+        String userOption = reader.readLine();
 
         if (userOption.equals("1")) return "user mode";
         else if (userOption.equals("2")) return "demonstration mode";
