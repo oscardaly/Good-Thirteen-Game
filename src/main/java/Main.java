@@ -9,22 +9,53 @@ public class Main {
         //initialise?
         printMenu();
 
-        final String userOption = getUserOrDemoMode(reader);
         DeckOfCards deckOfCards = DeckOfCards.createDeckOfCards();
         deckOfCards.shuffle();
-
         DeckOfCards faceUpCards = new DeckOfCards();
-        dealCardsFromDeck(deckOfCards, faceUpCards);
 
-        //while loop?
-        if (userOption.equals("user mode")) {
-            System.out.println("User mode.");
+        while (true) {
+            final String userOption = getUserOrDemoMode(reader);
+            dealCardsFromDeck(deckOfCards, faceUpCards);
 
-            //play game
+            if (userOption.equals("user mode")) {
+                System.out.println("--User mode--");
+
+                System.out.println("Enter a number (1) to choose your first card: ");
+                int firstChosenCardIndex = Integer.parseInt(reader.readLine()) - 1;
+                Card firstChosenCard = faceUpCards.getCardOfIndex(firstChosenCardIndex).card;
+
+                if (firstChosenCard.getRank() == Card.Rank.King) {
+                    faceUpCards.removeCardOfIndex(firstChosenCardIndex);
+
+                    if (deckOfCards.getSize() >= 1) {
+                        faceUpCards.add(deckOfCards.takeCardFromDeck());
+                    }
+                } else {
+                    System.out.println("Enter a number (1) to choose your second card: ");
+                    int secondChosenCardIndex = Integer.parseInt(reader.readLine()) - 1;
+                    Card secondChosenCard = faceUpCards.getCardOfIndex(secondChosenCardIndex).card;
+                    boolean cardsAddTo13 = firstChosenCard.getRank().ordinal() + secondChosenCard.getRank().ordinal() == 11;
+
+                    if (cardsAddTo13) {
+                        faceUpCards.removeCardOfIndex(firstChosenCardIndex);
+                        faceUpCards.removeCardOfIndex(secondChosenCardIndex);
+
+                        if (deckOfCards.getSize() >= 2) {
+                            faceUpCards.add(deckOfCards.takeCardFromDeck());
+                            faceUpCards.add(deckOfCards.takeCardFromDeck());
+                        } else if (deckOfCards.getSize() == 1) {
+                            faceUpCards.add(deckOfCards.takeCardFromDeck());
+                        }
+                    } else {
+                        System.out.println("Selected card values do not add to 13... please try again.");
+                    }
+                }
+            }
+            //keep a count of remaining cards at top
 
             //Allow user to choose 1/2 cards
             //Check that there is more than 0 cards face up
-            //Check that at least 1 move is available
+            //Check that at least 1 move is available - predicate?
             //Store this move as a hint
             //Ask user to choose a card
             //if the card is a king then remove it
@@ -38,19 +69,17 @@ public class Main {
             //If there are no cards left then the user has won and the game is ended
 
             //When game Is finished allow the user to replay the game using arrow keys move by move
-        }
 
-        else if (userOption.equals("demonstration mode")) {
-            System.out.println("Demonstration mode.");
+            else if (userOption.equals("demonstration mode")) {
+                System.out.println("Demonstration mode.");
 
-            //demonstration mode
-            //press any key and the computer will play the game for them
-            //shuffle cards
-            //deal 10 cards face up
-        }
-
-        else {
-            System.out.println("Incorrect option selected.");
+                //demonstration mode
+                //press any key and the computer will play the game for them
+                //shuffle cards
+                //deal 10 cards face up
+            } else {
+                System.out.println("Incorrect option selected.");
+            }
         }
     }
 
@@ -59,17 +88,15 @@ public class Main {
             for (int i = 0; i < 10; i++) {
                 Card card = deckOfCards.takeCardFromDeck();
                 //take this out into a method
-                System.out.println(i+1 + ". " + card.toString());
+                System.out.println(i + 1 + ". " + card.toString());
                 faceUpCards.add(card);
             }
-        }
-
-        else {
+        } else {
             System.out.println("Not enough cards in deck to start game");
         }
     }
 
-    protected static String getUserOrDemoMode(BufferedReader reader) throws IOException {
+    public static String getUserOrDemoMode(BufferedReader reader) throws IOException {
         System.out.println("Please enter 1 or 2 to select play mode: ");
         String userOption = reader.readLine();
 
@@ -84,3 +111,5 @@ public class Main {
         System.out.println("2. Demonstration Mode");
     }
 }
+
+//what is best practice with making methods public for testing

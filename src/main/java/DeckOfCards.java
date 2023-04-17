@@ -82,6 +82,13 @@ public class DeckOfCards {
         return current;
     }
 
+    public CardNode removeCardOfIndex(int index) {
+        CardNode previousCard = getCardOfIndex(index-1);
+        previousCard.next = previousCard.next.next;
+        size--;
+        return previousCard.next;
+    }
+
 }
 
 class CardNode {

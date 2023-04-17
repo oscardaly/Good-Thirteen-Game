@@ -82,4 +82,22 @@ public class DeckOfCardsTest {
 
         assertEquals(deckOfCards.getCardOfIndex(0).card, card);
     }
+
+    @Test
+    public void testRemovingCard() {
+        DeckOfCards deckOfCards = new DeckOfCards();
+        Card jackDiamonsCard = new Card(Card.Rank.Jack, Card.Suit.Diamonds);
+        Card queenHeartsCard = new Card(Card.Rank.Queen, Card.Suit.Hearts);
+        Card kingSpacesCard = new Card(Card.Rank.King, Card.Suit.Spades);
+
+        deckOfCards.add(jackDiamonsCard);
+        deckOfCards.add(queenHeartsCard);
+        deckOfCards.add(kingSpacesCard);
+        CardNode newCardAtIndex1 = deckOfCards.removeCardOfIndex(1);
+
+        assertEquals(2, deckOfCards.getSize());
+        assertEquals(newCardAtIndex1.card, kingSpacesCard);
+        assertEquals(jackDiamonsCard, deckOfCards.getCardOfIndex(0).card);
+        assertEquals(kingSpacesCard, deckOfCards.getCardOfIndex(1).card);
+    }
 }
