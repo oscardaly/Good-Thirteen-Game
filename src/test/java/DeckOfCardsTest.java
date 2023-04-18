@@ -93,10 +93,9 @@ public class DeckOfCardsTest {
         deckOfCards.add(jackDiamonsCard);
         deckOfCards.add(queenHeartsCard);
         deckOfCards.add(kingSpacesCard);
-        CardNode newCardAtIndex1 = deckOfCards.removeCardOfIndex(1);
+        deckOfCards.removeCard(queenHeartsCard);
 
         assertEquals(2, deckOfCards.getSize());
-        assertEquals(newCardAtIndex1.card, kingSpacesCard);
         assertEquals(jackDiamonsCard, deckOfCards.getCardOfIndex(0).card);
         assertEquals(kingSpacesCard, deckOfCards.getCardOfIndex(1).card);
     }
