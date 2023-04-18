@@ -89,6 +89,48 @@ public class DeckOfCards {
         return previousCard.next;
     }
 
+    public Card removeCard(Card cardToRemove) {
+        CardNode currentCardNode = head;
+
+        for (int i = 0; i < size; i++) {
+            if (currentCardNode.card.isEqualTo(cardToRemove)) {
+                removeCardOfIndex(i);
+                return cardToRemove;
+            }
+            currentCardNode = currentCardNode.next;
+        }
+
+        return currentCardNode.card;
+    }
+
+    public boolean contains(Card cardToFind) {
+        CardNode currentCardNode = head;
+
+        for (int i = 0; i < size; i++) {
+            if (currentCardNode.card.isEqualTo(cardToFind)) {
+                return true;
+            }
+            currentCardNode = currentCardNode.next;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder cardsAsString = new StringBuilder();
+        CardNode currentCardNode = head;
+
+        for (int i = 0; i < size; i++) {
+            cardsAsString.append(i+1)
+                    .append(". ")
+                    .append(currentCardNode.card.toString())
+                    .append("\n");
+            currentCardNode = currentCardNode.next;
+        }
+
+        return cardsAsString.toString();
+    }
 }
 
 class CardNode {

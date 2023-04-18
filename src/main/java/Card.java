@@ -15,9 +15,18 @@ public class Card {
         return suit;
     }
 
+    public boolean isKing() {
+        return rank == Rank.King;
+    }
+
     @Override
     public String toString() {
         return rank.toString() + " of " + suit.toString();
+    }
+
+    public boolean isEqualTo(Card card) {
+        return (card.getRank() == this.rank) &&
+                (card.getSuit() == this.suit);
     }
 
     public enum Rank {

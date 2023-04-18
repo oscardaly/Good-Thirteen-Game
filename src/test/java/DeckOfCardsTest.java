@@ -100,4 +100,37 @@ public class DeckOfCardsTest {
         assertEquals(jackDiamonsCard, deckOfCards.getCardOfIndex(0).card);
         assertEquals(kingSpacesCard, deckOfCards.getCardOfIndex(1).card);
     }
+
+    @Test
+    public void testRemoveMultipleCards() {
+        DeckOfCards deckOfCards = new DeckOfCards();
+        Card jackDiamonsCard = new Card(Card.Rank.Jack, Card.Suit.Diamonds);
+        Card queenHeartsCard = new Card(Card.Rank.Queen, Card.Suit.Hearts);
+        Card kingSpacesCard = new Card(Card.Rank.King, Card.Suit.Spades);
+
+        deckOfCards.add(jackDiamonsCard);
+        deckOfCards.add(queenHeartsCard);
+        deckOfCards.add(kingSpacesCard);
+        deckOfCards.removeCard(queenHeartsCard);
+        deckOfCards.removeCard(kingSpacesCard);
+
+        assertEquals(1, deckOfCards.getSize());
+        assertEquals(jackDiamonsCard, deckOfCards.getCardOfIndex(0).card);
+        assertFalse(deckOfCards.contains(queenHeartsCard));
+        assertFalse(deckOfCards.contains(kingSpacesCard));
+    }
+
+    @Test
+    public void testToString() {
+        DeckOfCards deckOfCards = new DeckOfCards();
+        Card jackDiamonsCard = new Card(Card.Rank.Jack, Card.Suit.Diamonds);
+        Card queenHeartsCard = new Card(Card.Rank.Queen, Card.Suit.Hearts);
+        Card kingSpacesCard = new Card(Card.Rank.King, Card.Suit.Spades);
+
+        deckOfCards.add(jackDiamonsCard);
+        deckOfCards.add(queenHeartsCard);
+        deckOfCards.add(kingSpacesCard);
+
+        assertEquals("1. Jack of Diamonds\n2. Queen of Hearts\n3. King of Spades\n", deckOfCards.toString());
+    }
 }

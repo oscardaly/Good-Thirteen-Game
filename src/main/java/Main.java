@@ -5,68 +5,65 @@ import java.io.InputStreamReader;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         //initialise?
         printMenu();
 
         DeckOfCards deckOfCards = DeckOfCards.createDeckOfCards();
         deckOfCards.shuffle();
+
         DeckOfCards faceUpCards = new DeckOfCards();
+        dealCardsFromDeck(deckOfCards, faceUpCards);
 
-        while (true) {
-            final String userOption = getUserOrDemoMode(reader);
-            dealCardsFromDeck(deckOfCards, faceUpCards);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        final String userOption = getUserOrDemoMode(reader);
+        DeckOfCards hint = availableMove(faceUpCards);
 
+        while (gameStatus(faceUpCards, hint).equals("in-progress")) {
             if (userOption.equals("user mode")) {
                 System.out.println("--User mode--");
-
-                System.out.println("Enter a number (1) to choose your first card: ");
+                System.out.println("--" + deckOfCards.getSize() + "cards left in deck--");
+                System.out.println(faceUpCards);
+                System.out.println("Enter a number (1) to choose your first card or 'h' to see a hint: ");
                 int firstChosenCardIndex = Integer.parseInt(reader.readLine()) - 1;
                 Card firstChosenCard = faceUpCards.getCardOfIndex(firstChosenCardIndex).card;
 
-                if (firstChosenCard.getRank() == Card.Rank.King) {
+                if (firstChosenCard.isKing()) {
                     faceUpCards.removeCardOfIndex(firstChosenCardIndex);
 
                     if (deckOfCards.getSize() >= 1) {
                         faceUpCards.add(deckOfCards.takeCardFromDeck());
                     }
-                } else {
+
+                    hint = availableMove(faceUpCards);
+                }
+
+                else {
                     System.out.println("Enter a number (1) to choose your second card: ");
                     int secondChosenCardIndex = Integer.parseInt(reader.readLine()) - 1;
                     Card secondChosenCard = faceUpCards.getCardOfIndex(secondChosenCardIndex).card;
-                    boolean cardsAddTo13 = firstChosenCard.getRank().ordinal() + secondChosenCard.getRank().ordinal() == 11;
 
-                    if (cardsAddTo13) {
-                        faceUpCards.removeCardOfIndex(firstChosenCardIndex);
-                        faceUpCards.removeCardOfIndex(secondChosenCardIndex);
+                    if (cardsAddTo13(firstChosenCard, secondChosenCard)) {
+                        faceUpCards.removeCard(firstChosenCard);
+                        faceUpCards.removeCard(secondChosenCard);
 
                         if (deckOfCards.getSize() >= 2) {
                             faceUpCards.add(deckOfCards.takeCardFromDeck());
                             faceUpCards.add(deckOfCards.takeCardFromDeck());
-                        } else if (deckOfCards.getSize() == 1) {
+                        }
+
+                        else if (deckOfCards.getSize() == 1) {
                             faceUpCards.add(deckOfCards.takeCardFromDeck());
                         }
-                    } else {
+
+                        hint = availableMove(faceUpCards);
+                    }
+
+                    else {
                         System.out.println("Selected card values do not add to 13... please try again.");
                     }
                 }
             }
-            //keep a count of remaining cards at top
 
-            //Allow user to choose 1/2 cards
-            //Check that there is more than 0 cards face up
-            //Check that at least 1 move is available - predicate?
-            //Store this move as a hint
-            //Ask user to choose a card
-            //if the card is a king then remove it
-            //else Ask the user to choose another card to remove
-            //if the 2 cards don't add to 13 ask the user to choose again
-            //else if they do add to 13 then remove the 2 cards and deal 2 more cards
-            //if there is only 1 card left then just deal that
-            //if there are no cards left then alert the user
-            //If there is no move available then confirm this to the user
-            //the game is ended and lost
-            //If there are no cards left then the user has won and the game is ended
 
             //When game Is finished allow the user to replay the game using arrow keys move by move
 
@@ -83,17 +80,47 @@ public class Main {
         }
     }
 
+    private static DeckOfCards availableMove(DeckOfCards faceUpCards) {
+        DeckOfCards availableMove = new DeckOfCards();
+
+        for (int i = 0; i > faceUpCards.getSize(); i++) {
+            for (int j = 0; j > faceUpCards.getSize(); i ++) {
+                if (faceUpCards.getCardOfIndex(i).card.isKing()) {
+                    availableMove.add(faceUpCards.getCardOfIndex(i).card);
+                    return availableMove;
+                }
+
+                else if (faceUpCards.getCardOfIndex(j).card.isKing()) {
+                    availableMove.add(faceUpCards.getCardOfIndex(j).card);
+                    return availableMove;
+                }
+
+                else if (cardsAddTo13(faceUpCards.getCardOfIndex(i).card, faceUpCards.getCardOfIndex(j).card)) {
+                    availableMove.add(faceUpCards.getCardOfIndex(i).card);
+                    availableMove.add(faceUpCards.getCardOfIndex(j).card);
+                    return availableMove;
+                }
+            }
+        }
+
+        return availableMove;
+    }
+
     private static void dealCardsFromDeck(DeckOfCards deckOfCards, DeckOfCards faceUpCards) {
         if (deckOfCards.getSize() >= 10) {
             for (int i = 0; i < 10; i++) {
-                Card card = deckOfCards.takeCardFromDeck();
-                //take this out into a method
-                System.out.println(i + 1 + ". " + card.toString());
-                faceUpCards.add(card);
+                faceUpCards.add(deckOfCards.takeCardFromDeck());
             }
-        } else {
+        }
+
+        else {
             System.out.println("Not enough cards in deck to start game");
         }
+    }
+
+    private static boolean cardsAddTo13(Card firstCard, Card secondCard) {
+        return firstCard.getRank().ordinal() + secondCard.getRank().ordinal() == 11;
+
     }
 
     public static String getUserOrDemoMode(BufferedReader reader) throws IOException {
@@ -109,6 +136,31 @@ public class Main {
         System.out.println("Welcome to the Good Thirteen CLI Game!");
         System.out.println("1. Play Game");
         System.out.println("2. Demonstration Mode");
+    }
+
+    private static String gameStatus(DeckOfCards faceUpCards, DeckOfCards hint) {
+        if (faceUpCards.getSize() > 0) {
+            if (hint.getSize() > 0) {
+                return "in-progress";
+            }
+
+            else {
+                System.out.println("Game Lost!");
+                return "lose";
+            }
+        }
+
+        else {
+            System.out.println("Game Won!");
+            return "win";
+        }
+        //Check that there is more than 0 cards face up
+            //Check that at least 1 move is available - predicate?
+            //Store this move as a hint
+
+            //else If there is no move available then confirm this to the user
+            //the game is ended and lost
+        //else there are no cards left then the user has won and the game is ended
     }
 }
 
