@@ -66,6 +66,8 @@ public class Main {
             //When game Is finished allow the user to replay the game using arrow keys move by move
 
             else if (userOption.equals("Demonstration Mode")) {
+                System.out.println("Press ENTER to play next move...");
+                System.in.read();
                 System.out.println("Chosen move:");
                 System.out.println(availableMove);
 
