@@ -10,20 +10,20 @@ public class MenuTest {
     public void testUserMode() throws IOException {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("1");
-        assertEquals("user mode", Main.getUserOrDemoMode(bufferedReader));
+        assertEquals("User Mode", Main.getUserOrDemoMode(bufferedReader));
     }
 
     @Test
     public void testDemoMode() throws IOException {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("2");
-        assertEquals("demonstration mode", Main.getUserOrDemoMode(bufferedReader));
+        assertEquals("Demonstration Mode", Main.getUserOrDemoMode(bufferedReader));
     }
 
     @Test
     public void testInvalidOption() throws IOException {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("3");
-        assertEquals("not an option", Main.getUserOrDemoMode(bufferedReader));
+        assertEquals("Incorrect option selected", Main.getUserOrDemoMode(bufferedReader));
     }
 }
