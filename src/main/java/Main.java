@@ -8,6 +8,7 @@ public class Main {
         //initialise?
         printMenu();
 
+        Moves gameMoves = new Moves();
         DeckOfCards deckOfCards = DeckOfCards.createDeckOfCards();
         deckOfCards.shuffle();
 
@@ -34,6 +35,7 @@ public class Main {
                     }
 
                     availableMove = findAvailableMove(faceUpCards);
+                    gameMoves.addMove(new DeckOfCards(firstChosenCard));
                 }
 
                 else if (firstChosenCard.getRank() == null && firstChosenCard.getSuit() == null) {
@@ -57,13 +59,12 @@ public class Main {
                         }
 
                         availableMove = findAvailableMove(faceUpCards);
+                        gameMoves.addMove(new DeckOfCards(firstChosenCard, secondChosenCard));
                     } else {
                         System.out.println("Selected card values do not add to 13... please try again.");
                     }
                 }
             }
-
-            //When game Is finished allow the user to replay the game using arrow keys move by move
 
             else if (userOption.equals("Demonstration Mode")) {
                 System.out.println("Press ENTER to play next move...");
@@ -87,12 +88,26 @@ public class Main {
                     }
                 }
 
+                gameMoves.addMove(availableMove);
                 availableMove = findAvailableMove(faceUpCards);
             }
             else {
                 break;
             }
         }
+
+        System.out.println("Would you like to replay your game move by move? (y/n)");
+        String replayOption = reader.readLine();
+
+        if (replayOption.equals("y")) {
+            for (int i = 0; i < gameMoves.getNumberOfMoves(); i++) {
+                System.out.println("Press ENTER to see next move...");
+                System.in.read();
+                System.out.println("Move " + (i+1) + ": " + gameMoves.getMoveAtIndex(i).toString());
+            }
+        }
+
+        System.out.println("\nThank you for playing the Good Thirteen CLI game!");
     }
 
     private static Card getCardChoiceFromUser(DeckOfCards faceUpCards, DeckOfCards availableMove, BufferedReader reader) throws IOException {
@@ -192,3 +207,7 @@ public class Main {
 
 //what is best practice with making methods public for testing
 //create a queue for the game replay feature as it is first in first out
+
+//TODO
+// - Add tests for Moves queue and MoveNode
+// - Refactor and add more tests for user input

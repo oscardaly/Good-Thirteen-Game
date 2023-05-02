@@ -9,6 +9,12 @@ public class DeckOfCards {
         this.size = 0;
     }
 
+    public DeckOfCards(Card... cards) {
+        for (Card card : cards) {
+            add(card);
+        }
+    }
+
     public CardNode getHead() {
         return this.head;
     }
@@ -128,10 +134,11 @@ public class DeckOfCards {
         CardNode currentCardNode = head;
 
         for (int i = 0; i < size; i++) {
-            cardsAsString.append(i+1)
+            cardsAsString.append(i + 1)
                     .append(". ")
                     .append(currentCardNode.card.toString())
                     .append("\n");
+
             currentCardNode = currentCardNode.next;
         }
 
@@ -148,3 +155,4 @@ class CardNode {
         this.next = null;
     }
 }
+
