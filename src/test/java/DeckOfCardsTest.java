@@ -130,6 +130,6 @@ public class DeckOfCardsTest {
         deckOfCards.add(queenHeartsCard);
         deckOfCards.add(kingSpacesCard);
 
-        assertEquals("1. Jack of Diamonds\n2. Queen of Hearts\n3. King of Spades\n", deckOfCards.toStringAsList(ListType.NUMBERED));
+        assertEquals("1. Jack of Diamonds\n2. Queen of Hearts\n3. King of Spades\n", deckOfCards.toString());
     }
 }
