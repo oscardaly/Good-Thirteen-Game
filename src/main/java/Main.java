@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        //initialise?
         printMenu();
 
         Moves gameMoves = new Moves();
@@ -96,21 +95,31 @@ public class Main {
             }
         }
 
-        System.out.println("Would you like to replay your game move by move? (y/n)");
-        String replayOption = reader.readLine();
-
-        if (replayOption.equals("y")) {
-            for (int i = 0; i < gameMoves.getNumberOfMoves(); i++) {
-                System.out.println("Press ENTER to see next move...");
-                System.in.read();
-                System.out.println("Move " + (i+1) + ": " + gameMoves.getMoveAtIndex(i).toString());
-            }
-        }
-
+        askUserToReplayMoves(gameMoves, reader);
         System.out.println("\nThank you for playing the Good Thirteen CLI game!");
     }
 
-    private static Card getCardChoiceFromUser(DeckOfCards faceUpCards, DeckOfCards availableMove, BufferedReader reader) throws IOException {
+    public static void askUserToReplayMoves(Moves gameMoves, BufferedReader reader) throws IOException {
+        System.out.println("Would you like to replay your game move by move? (y/n)");
+        String replayOption = reader.readLine();
+        System.out.println("\n");
+
+        if (replayOption.equals("y")) {
+            replayGameMoves(gameMoves);
+        }
+    }
+
+    private static void replayGameMoves(Moves gameMoves) throws IOException {
+        for (int i = 0; i < gameMoves.getNumberOfMoves(); i++) {
+            if (i > 0) {
+                System.out.println("Press ENTER to see next move...");
+                System.in.read();
+            }
+            System.out.println("Move " + (i+1) + ": " + gameMoves.getMoveAtIndex(i).toString());
+        }
+    }
+
+    public static Card getCardChoiceFromUser(DeckOfCards faceUpCards, DeckOfCards availableMove, BufferedReader reader) throws IOException {
         System.out.println("Enter a number (1) to choose your a card or 'h' to see a hint: ");
         String userInput = reader.readLine();
 
@@ -204,9 +213,6 @@ public class Main {
         }
     }
 }
-
-//what is best practice with making methods public for testing
-//create a queue for the game replay feature as it is first in first out
 
 //TODO
 // - Add tests for Moves queue and MoveNode

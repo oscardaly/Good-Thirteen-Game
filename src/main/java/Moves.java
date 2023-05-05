@@ -9,6 +9,12 @@ public class Moves {
         lastMove = null;
     }
 
+    public Moves(DeckOfCards... moves) {
+        for (DeckOfCards cardsForMove : moves) {
+            addMove(cardsForMove);
+        }
+    }
+
     public void addMove(final DeckOfCards cardsForMove) {
         MoveNode moveNode = new MoveNode(cardsForMove);
 
@@ -104,11 +110,13 @@ class MoveNode {
     @Override
     public String toString() {
         StringBuilder moveAsString = new StringBuilder();
-        moveAsString.append(firstCard.toString());
+        moveAsString.append(firstCard);
 
         if (secondCard != null) {
-            moveAsString.append(", ").append(secondCard.toString());
+            moveAsString.append(", ").append(secondCard);
         }
+
+        moveAsString.append("\n");
 
         return moveAsString.toString();
     }
