@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Random;
 
 public class DeckOfCards {
@@ -143,6 +144,23 @@ public class DeckOfCards {
         }
 
         return cardsAsString.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        DeckOfCards deckToCompare = (DeckOfCards) obj;
+
+        for (int i = 0; i < deckToCompare.getSize(); i++) {
+            if (this.getCardOfIndex(i).card != deckToCompare.getCardOfIndex(i).card) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
