@@ -4,99 +4,98 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        printMenu();
+    public static void main(String[] args) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            printMenu();
 
-        Moves gameMoves = new Moves();
-        DeckOfCards deckOfCards = DeckOfCards.createDeckOfCards();
-        deckOfCards.shuffle();
+            Moves gameMoves = new Moves();
+            DeckOfCards deckOfCards = DeckOfCards.createDeckOfCards();
+            deckOfCards.shuffle();
 
-        DeckOfCards faceUpCards = new DeckOfCards();
-        dealCardsFromDeck(deckOfCards, faceUpCards);
+            DeckOfCards faceUpCards = new DeckOfCards();
+            dealCardsFromDeck(deckOfCards, faceUpCards);
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        final String userOption = getUserOrDemoMode(reader);
-        System.out.println("--" + userOption + "--");
-        DeckOfCards availableMove = findAvailableMove(faceUpCards);
+            final String userOption = getUserOrDemoMode(reader);
+            System.out.println("--" + userOption + "--");
+            DeckOfCards availableMove = findAvailableMove(faceUpCards);
 
-        while (gameStatus(faceUpCards, availableMove).equals("in-progress")) {
-            System.out.println("--" + deckOfCards.getSize() + " cards left in deck--");
-            System.out.println(faceUpCards);
+            while (gameStatus(faceUpCards, availableMove).equals("in-progress")) {
 
-            if (userOption.equals("User Mode")) {
-                Card firstChosenCard = getCardChoiceFromUser(faceUpCards, availableMove, reader);
+                if (userOption.equals("User Mode")) {
+                    System.out.println("--" + deckOfCards.getSize() + " cards left in deck--");
+                    System.out.println(faceUpCards);
+                    Card firstChosenCard = getCardChoiceFromUser(faceUpCards, availableMove, reader);
 
-                if (firstChosenCard.isKing()) {
-                    faceUpCards.removeCard(firstChosenCard);
-
-                    if (deckOfCards.getSize() >= 1) {
-                        faceUpCards.add(deckOfCards.takeCardFromDeck());
-                    }
-
-                    availableMove = findAvailableMove(faceUpCards);
-                    gameMoves.addMove(new DeckOfCards(firstChosenCard));
-                }
-
-                else if (firstChosenCard.getRank() == null && firstChosenCard.getSuit() == null) {
-                    continue;
-                }
-                else {
-                    Card secondChosenCard = getCardChoiceFromUser(faceUpCards, availableMove, reader);
-
-                    if (secondChosenCard.getRank() == null && secondChosenCard.getSuit() == null) {
-                        continue;
-                    }
-                    else if (cardsAddTo13(firstChosenCard, secondChosenCard)) {
+                    if (firstChosenCard.isKing()) {
                         faceUpCards.removeCard(firstChosenCard);
-                        faceUpCards.removeCard(secondChosenCard);
 
-                        if (deckOfCards.getSize() >= 2) {
-                            faceUpCards.add(deckOfCards.takeCardFromDeck());
-                            faceUpCards.add(deckOfCards.takeCardFromDeck());
-                        } else if (deckOfCards.getSize() == 1) {
+                        if (deckOfCards.getSize() >= 1) {
                             faceUpCards.add(deckOfCards.takeCardFromDeck());
                         }
 
                         availableMove = findAvailableMove(faceUpCards);
-                        gameMoves.addMove(new DeckOfCards(firstChosenCard, secondChosenCard));
+                        gameMoves.addMove(new DeckOfCards(firstChosenCard));
+                    } else if (firstChosenCard.getRank() == null && firstChosenCard.getSuit() == null) {
+                        continue;
                     } else {
-                        System.out.println("Selected card values do not add to 13... please try again.");
+                        Card secondChosenCard = getCardChoiceFromUser(faceUpCards, availableMove, reader);
+
+                        if (secondChosenCard.getRank() == null && secondChosenCard.getSuit() == null) {
+                            continue;
+                        } else if (cardsAddTo13(firstChosenCard, secondChosenCard)) {
+                            faceUpCards.removeCard(firstChosenCard);
+                            faceUpCards.removeCard(secondChosenCard);
+
+                            if (deckOfCards.getSize() >= 2) {
+                                faceUpCards.add(deckOfCards.takeCardFromDeck());
+                                faceUpCards.add(deckOfCards.takeCardFromDeck());
+                            } else if (deckOfCards.getSize() == 1) {
+                                faceUpCards.add(deckOfCards.takeCardFromDeck());
+                            }
+
+                            availableMove = findAvailableMove(faceUpCards);
+                            gameMoves.addMove(new DeckOfCards(firstChosenCard, secondChosenCard));
+                        } else {
+                            System.out.println("Selected card values do not add to 13... please try again.");
+                        }
                     }
-                }
-            }
+                } else if (userOption.equals("Demonstration Mode")) {
+                    System.out.println("--" + deckOfCards.getSize() + " cards left in deck--");
+                    System.out.println(faceUpCards);
+                    System.out.println("Press ENTER to play next move...");
+                    System.in.read();
+                    System.out.println("Chosen move:");
+                    System.out.println(availableMove);
 
-            else if (userOption.equals("Demonstration Mode")) {
-                System.out.println("Press ENTER to play next move...");
-                System.in.read();
-                System.out.println("Chosen move:");
-                System.out.println(availableMove);
+                    if (availableMove.getSize() >= 1) {
+                        if (availableMove.getSize() == 2) {
+                            faceUpCards.removeCard(availableMove.getHead().next.card);
 
-                if (availableMove.getSize() >= 1) {
-                    if (availableMove.getSize() == 2) {
-                        faceUpCards.removeCard(availableMove.getHead().next.card);
+                            if (deckOfCards.getSize() >= 2) {
+                                faceUpCards.add(deckOfCards.takeCardFromDeck());
+                            }
+                        }
 
-                        if (deckOfCards.getSize() >= 2) {
+                        faceUpCards.removeCard(availableMove.getHead().card);
+
+                        if (deckOfCards.getSize() >= 1) {
                             faceUpCards.add(deckOfCards.takeCardFromDeck());
                         }
                     }
 
-                    faceUpCards.removeCard(availableMove.getHead().card);
-
-                    if (deckOfCards.getSize() >= 1) {
-                        faceUpCards.add(deckOfCards.takeCardFromDeck());
-                    }
+                    gameMoves.addMove(availableMove);
+                    availableMove = findAvailableMove(faceUpCards);
+                } else {
+                    System.out.println("Incorrect option selected. Exiting the game...");
+                    System.exit(0);
                 }
+            }
 
-                gameMoves.addMove(availableMove);
-                availableMove = findAvailableMove(faceUpCards);
-            }
-            else {
-                break;
-            }
+            askUserToReplayMoves(gameMoves, reader);
+            System.out.println("\nThank you for playing the Good Thirteen CLI game!");
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
         }
-
-        askUserToReplayMoves(gameMoves, reader);
-        System.out.println("\nThank you for playing the Good Thirteen CLI game!");
     }
 
     public static void askUserToReplayMoves(Moves gameMoves, BufferedReader reader) throws IOException {
@@ -115,7 +114,7 @@ public class Main {
                 System.out.println("Press ENTER to see next move...");
                 System.in.read();
             }
-            System.out.println("Move " + (i+1) + ": " + gameMoves.getMoveAtIndex(i).toString());
+            System.out.println("Move " + (i + 1) + ": " + gameMoves.getMoveAtIndex(i).toString());
         }
     }
 
@@ -132,8 +131,7 @@ public class Main {
 
                 if (availableMove.getSize() > 0) {
                     System.out.println(availableMove);
-                }
-                else if (availableMove.getSize() == 0) {
+                } else if (availableMove.getSize() == 0) {
                     System.out.println("No moves available.");
                 }
 
@@ -213,7 +211,3 @@ public class Main {
         }
     }
 }
-
-//TODO
-// - Add tests for Moves queue and MoveNode
-// - Refactor and add more tests for user input

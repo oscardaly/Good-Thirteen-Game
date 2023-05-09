@@ -7,7 +7,6 @@
 # documentation.
 
 name: Java CI with Maven
-
 on:
   push:
     branches: [ "master" ]
@@ -16,7 +15,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -37,6 +35,9 @@ jobs:
         
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
             
   publish-job:
     runs-on: ubuntu-latest
@@ -52,4 +53,5 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: Package
-          path: staging
+          path: staging        
+      
