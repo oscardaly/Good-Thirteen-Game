@@ -2,6 +2,8 @@
 
 This is a Java command-line interface (CLI) implementation of the popular card game "Good Thirteen". It allows you to play against the computer, and supports multiple rounds of play.
 
+[![Java CI with Maven](https://github.com/oscardaly/Good-Thirteen-Game/actions/workflows/maven.yml/badge.svg)](https://github.com/oscardaly/Good-Thirteen-Game/actions/workflows/maven.yml)
+
 ## How to Play
 
 To play the game, you will need to have Java 8 or higher installed on your computer. Once you have Java installed, follow these steps:
